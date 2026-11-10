@@ -6,16 +6,16 @@
         @if ($errors->has('connection'))
             <x-form-feedback />
         @else
-            <p class="body-copy leading-5">Connect a MySQL database to store your workspace settings and accounts.</p>
+            <p class="body-copy sm:text-base">Connect a MySQL database to store your workspace settings and accounts.</p>
         @endif
     </div>
 
     <section class="surface" aria-labelledby="database-heading">
-        <div class="mb-3 flex items-center gap-2.5">
-            <span class="grid size-7 shrink-0 place-items-center rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+        <div class="mb-4 flex items-center gap-3">
+            <span class="grid size-9 shrink-0 place-items-center rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                 <x-icon name="database" class="size-[17px]" />
             </span>
-            <h2 id="database-heading" class="text-base font-semibold tracking-tight">Database connection</h2>
+            <h2 id="database-heading" class="text-lg font-semibold tracking-tight">Database connection</h2>
         </div>
 
         @unless ($errors->has('connection'))
@@ -67,17 +67,21 @@
 
             <form method="post" action="{{ route('install.verify', absolute: false) }}" data-pending-form="connection-status">
                 @csrf
-                <fieldset @disabled(! $canWrite) class="grid min-w-0 gap-2">
-                    <div class="connection-address grid gap-2 sm:grid-cols-[minmax(0,1fr)_7rem]">
+                <fieldset @disabled(! $canWrite) class="grid min-w-0 gap-4 short-desktop:grid-cols-[minmax(0,1fr)_8rem_minmax(0,1fr)] short-desktop:gap-y-3">
+                    <div class="grid gap-4 min-[390px]:grid-cols-[minmax(0,1fr)_6rem] sm:grid-cols-[minmax(0,1fr)_9rem] short-desktop:contents">
                         <x-field name="host" label="Host" :value="app()->isLocal() ? '127.0.0.1' : null" placeholder="mysql.example.com" autocomplete="off" spellcheck="false" required />
                         <x-field name="port" label="Port" value="3306" type="number" inputmode="numeric" min="1" max="65535" required />
                     </div>
-                    <x-field name="database" label="Database name" placeholder="temp_mail" autocomplete="off" spellcheck="false" required />
-                    <x-field name="username" label="Database username" placeholder="temp_mail_user" autocomplete="off" autocapitalize="none" spellcheck="false" required />
-                    <x-field name="password" label="Database password" type="password" autocomplete="off"
-                        :required="! app()->isLocal()"
-                        :hint="app()->isLocal() ? 'You can leave this blank if your local MySQL user has no password.' : 'Enter the password for the MySQL user assigned to this database.'" />
-                    <button class="primary" type="submit" data-pending-label="Checking connection…">
+                    <div class="grid gap-4 sm:grid-cols-2 short-desktop:contents">
+                        <x-field name="database" label="Database name" placeholder="temp_mail" autocomplete="off" spellcheck="false" required />
+                        <x-field name="username" label="Database username" placeholder="temp_mail_user" autocomplete="off" autocapitalize="none" spellcheck="false" required />
+                    </div>
+                    <div class="min-w-0 short-desktop:col-span-2">
+                        <x-field name="password" label="Database password" type="password" autocomplete="off"
+                            :required="! app()->isLocal()"
+                            :hint="app()->isLocal() ? 'You can leave this blank if your local MySQL user has no password.' : 'Enter the password for the MySQL user assigned to this database.'" />
+                    </div>
+                    <button class="primary short-desktop:col-span-full" type="submit" data-pending-label="Checking connection…">
                         <span hidden data-spinner aria-hidden="true" class="size-4 rounded-full border-2 border-white/40 border-t-white motion-safe:animate-spin"></span>
                         <span data-submit-label>Verify connection</span>
                     </button>

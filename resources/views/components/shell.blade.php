@@ -41,8 +41,8 @@
     <main id="main" tabindex="-1" @class([
         'mx-auto w-full px-4 outline-none sm:px-6',
         'max-w-5xl' => $wide,
-        'max-w-[38rem]' => ! $wide,
-        'setup-page' => $setup,
+        'max-w-[38rem]' => ! $wide && ! $setup,
+        'setup-page max-w-[52rem]' => $setup,
         'pt-8 pb-12 sm:pt-11' => ! $setup,
     ])>
         {{ $slot }}

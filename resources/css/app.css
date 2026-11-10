@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@custom-variant short-desktop (@media (min-width: 900px) and (max-height: 700px));
 
 @font-face {
     font-family: Inter;
@@ -51,49 +52,39 @@
         caret-color: var(--field-ink);
     }
 
+    .field::-ms-reveal {
+        display: none;
+    }
+
     .setup-page {
-        @apply grid gap-3 py-3 sm:gap-4;
-        padding-block: clamp(0.75rem, 2.5dvh, 1.75rem);
+        @apply grid gap-3.5 sm:gap-5;
+        padding-block: clamp(1.25rem, 3dvh, 2.5rem);
     }
 
     .setup-page .surface {
-        @apply p-3 sm:p-5;
+        @apply p-4 sm:p-7;
     }
 
     .setup-page .field {
-        @apply min-h-9 py-1;
+        @apply min-h-12 text-base;
     }
 
     .setup-page .primary,
     .setup-page .secondary {
-        @apply min-h-10 py-1.5;
+        @apply min-h-12;
     }
 
     .setup-title {
-        @apply text-2xl/[1.12] font-semibold tracking-[-0.04em] sm:text-3xl/[1.12];
+        @apply text-[1.75rem]/[1.12] font-semibold tracking-[-0.04em] sm:text-[2.5rem]/[1.1];
     }
 
-    @media (max-height: 800px) {
+    @media (min-width: 640px) and (max-height: 700px) {
         .setup-page {
-            @apply gap-2.5 py-3;
+            @apply gap-3 py-3;
         }
 
-        .setup-page .field-group {
-            @apply grid-cols-[6.5rem_minmax(0,1fr)] items-center gap-x-2;
-        }
-
-        .setup-page .field-group > p {
-            @apply col-span-full;
-        }
-
-        .setup-page [data-error-summary] {
-            @apply p-2 text-xs/4;
-        }
-    }
-
-    @media (min-width: 640px) and (max-height: 800px) {
-        .setup-page .connection-address .field-group {
-            @apply grid-cols-[auto_minmax(0,1fr)];
+        .setup-page .surface {
+            @apply p-5;
         }
     }
 

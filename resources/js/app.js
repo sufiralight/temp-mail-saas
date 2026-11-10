@@ -40,7 +40,6 @@ document.querySelectorAll('[data-password-toggle]').forEach((button) => {
         const visible = input.type === 'password';
         input.type = visible ? 'text' : 'password';
         button.setAttribute('aria-pressed', String(visible));
-        button.textContent = visible ? 'Hide' : 'Show';
     });
 });
 
