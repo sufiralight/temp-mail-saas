@@ -73,8 +73,8 @@
                         <x-field name="port" label="Port" value="3306" type="number" inputmode="numeric" min="1" max="65535" required />
                     </div>
                     <div class="grid gap-4 sm:grid-cols-2 short-desktop:contents">
-                        <x-field name="database" label="Database name" placeholder="temp_mail" autocomplete="off" spellcheck="false" required />
-                        <x-field name="username" label="Database username" placeholder="temp_mail_user" autocomplete="off" autocapitalize="none" spellcheck="false" required />
+                        <x-field name="database" label="Database name" autocomplete="off" spellcheck="false" required />
+                        <x-field name="username" label="Database username" autocomplete="off" autocapitalize="none" spellcheck="false" required />
                     </div>
                     <div class="min-w-0 short-desktop:col-span-2">
                         <x-field name="password" label="Database password" type="password" autocomplete="off"
