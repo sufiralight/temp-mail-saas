@@ -5,16 +5,39 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password as PasswordRule;
+use Illuminate\Validation\ValidationException;
 
 class AccountController extends Controller
 {
+    public function register(Request $request): RedirectResponse
+    {
+        $attributes = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', Rule::unique(User::class)],
+            'password' => ['required', 'string', 'regex:/\A[^\x00]{1,72}\z/', 'confirmed', PasswordRule::min(12)],
+        ]);
+
+        try {
+            $user = User::create($attributes);
+        } catch (UniqueConstraintViolationException) {
+            throw ValidationException::withMessages(['email' => __('validation.unique', ['attribute' => 'email'])]);
+        }
+
+        Auth::login($user);
+        $request->session()->regenerate();
+
+        return to_route('dashboard');
+    }
+
     public function signIn(Request $request): RedirectResponse
     {
         $credentials = $request->validate([

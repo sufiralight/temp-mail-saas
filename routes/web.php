@@ -21,10 +21,13 @@ Route::middleware(VerifyWorkspaceOrigin::class)->group(function (): void {
     Route::middleware(RequireWorkspace::class)->group(function (): void {
         Route::middleware('guest')->group(function (): void {
             Route::view('/login', 'account.login')->name('login');
+            Route::view('/register', 'account.register')->name('register');
             Route::view('/forgot-password', 'account.forgot-password')->name('password.request');
             Route::get('/reset-password/{token}', [AccountController::class, 'resetForm'])->name('password.reset');
             Route::post('/login', [AccountController::class, 'signIn'])
                 ->middleware('throttle:8,1,workspace-login')->name('login.store');
+            Route::post('/register', [AccountController::class, 'register'])
+                ->middleware('throttle:6,1,workspace-registration')->name('register.store');
             Route::middleware('throttle:8,1,workspace-recovery')->controller(AccountController::class)->group(function (): void {
                 Route::post('/forgot-password', 'sendResetLink')->name('password.email');
                 Route::post('/reset-password', 'resetPassword')->name('password.update');
