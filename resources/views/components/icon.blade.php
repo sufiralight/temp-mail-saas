@@ -23,6 +23,18 @@
         @case('arrow')
             <path d="M4 12h15m-6-6 6 6-6 6"/>
             @break
+        @case('dashboard')
+            <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18m-11 0v11"/>
+            @break
+        @case('menu')
+            <path d="M4 6h16M4 12h16M4 18h16"/>
+            @break
+        @case('chevron-down')
+            <path d="m6 9 6 6 6-6"/>
+            @break
+        @case('sign-out')
+            <path d="M11 4H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6m-1-8h11m-4-4 4 4-4 4"/>
+            @break
         @case('check')
             <path d="m5 12 4 4L19 6"/>
             @break

@@ -166,6 +166,6 @@ class WorkspaceSetupTest extends TestCase
         $this->post($origin.'/reset-password', $credentials)->assertSessionHasErrors('email');
         $this->post($origin.'/login', ['email' => $user->email, 'password' => $credentials['password']])
             ->assertRedirect($origin.'/dashboard');
-        $this->get($origin.'/dashboard')->assertSee('Your inbox isn’t available yet.');
+        $this->get($origin.'/dashboard')->assertOk()->assertSee('Dashboard')->assertDontSee('Inbox');
     }
 }

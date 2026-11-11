@@ -1,4 +1,4 @@
-@props(['title', 'wide' => false, 'setup' => false])
+@props(['title', 'wide' => false, 'setup' => false, 'sidebar' => false])
 
 <!doctype html>
 <html lang="en">
@@ -44,6 +44,7 @@
         'max-w-[38rem]' => ! $wide && ! $setup,
         'setup-page max-w-[52rem]' => $setup,
         'pt-8 pb-12 sm:pt-11' => ! $setup,
+        'lg:max-w-none lg:p-0' => $sidebar,
     ])>
         {{ $slot }}
     </main>
