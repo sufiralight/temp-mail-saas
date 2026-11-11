@@ -28,7 +28,7 @@
             </details>
         @endif
 
-        <div @class(['min-w-0', 'lg:px-8 lg:pt-11 lg:pb-12' => $isAdministrator])>
+        <div @class(['min-w-0', 'lg:px-8 lg:pt-8 lg:pb-12' => $isAdministrator])>
             <div class="mb-7">
                 <p class="mb-2 text-[11px] font-semibold tracking-[0.14em] text-zinc-600 uppercase dark:text-zinc-400">Workspace</p>
                 <h1 class="text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">Dashboard</h1>

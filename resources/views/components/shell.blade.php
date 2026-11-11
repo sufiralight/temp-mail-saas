@@ -22,9 +22,15 @@
 <body class="min-h-dvh bg-zinc-50 font-sans text-zinc-950 antialiased dark:bg-zinc-950 dark:text-zinc-50">
     <a class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-10 focus:rounded-lg focus:bg-white focus:px-3 focus:py-2 focus:text-zinc-950" href="#main">Skip to content</a>
     <header class="border-b border-zinc-200/80 bg-white dark:border-zinc-800 dark:bg-zinc-950">
-        <div @class(['mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 sm:px-8', 'min-h-12 sm:min-h-14' => $setup, 'min-h-16' => ! $setup])>
+        <div @class([
+            'mx-auto flex items-center justify-between gap-3 px-4',
+            'max-w-6xl sm:px-8' => ! $sidebar,
+            'sm:px-6 lg:pr-8' => $sidebar,
+            'min-h-12 sm:min-h-14' => $setup,
+            'min-h-16' => ! $setup,
+        ])>
             <a href="/" class="flex shrink-0 items-center gap-2.5 rounded-lg text-sm font-bold tracking-[-0.025em]">
-                <span class="grid size-8 place-items-center rounded-[9px] bg-indigo-600 text-white dark:bg-indigo-500">
+                <span class="grid size-8 place-items-center rounded-[9px] border border-indigo-200 bg-indigo-50 text-indigo-700 dark:border-indigo-900 dark:bg-indigo-950 dark:text-indigo-300">
                     <x-icon name="mail" class="size-[18px]" />
                 </span>
                 Temp Mail
