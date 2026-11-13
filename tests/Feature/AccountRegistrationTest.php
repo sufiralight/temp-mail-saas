@@ -52,7 +52,9 @@ class AccountRegistrationTest extends TestCase
         $this->assertAuthenticatedAs($member);
         $this->assertTrue(Hash::check(self::MEMBER['password'], $member->password));
         $this->assertDatabaseHas('workspace_settings', ['id' => 1, 'admin_id' => $administrator->id]);
-        $this->get(route('dashboard'))->assertOk()->assertSee('Signed in as Casey Member');
+        $this->get(route('dashboard'))->assertOk()
+            ->assertSee('aria-label="Account menu"', false)
+            ->assertSee('Casey Member');
         $this->get(route('register'))->assertRedirect(route('dashboard'));
     }
 

@@ -1,35 +1,134 @@
-const themeToggle = document.querySelector('[data-theme-toggle]');
+const themeControl = document.querySelector('[data-theme-control]');
+const themeTrigger = themeControl.querySelector('[data-theme-trigger]');
+const themeMenu = themeControl.querySelector('[role=menu]');
+const themeOptions = [...themeMenu.querySelectorAll('[data-theme-mode]')];
+const themeIcons = themeTrigger.querySelectorAll('[data-theme-icon]');
+const themeKey = 'temp-mail-theme';
 const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
 
-function updateTheme(theme) {
-    document.documentElement.dataset.theme = theme;
-    themeToggle.setAttribute('aria-pressed', String(theme === 'dark'));
+function savedTheme() {
+    try {
+        const theme = localStorage.getItem(themeKey);
+        return theme === 'light' || theme === 'dark' ? theme : 'system';
+    } catch {
+        return 'system';
+    }
 }
 
-themeToggle.hidden = false;
-updateTheme(document.documentElement.dataset.theme);
+let themeMode = savedTheme();
 
-themeToggle.addEventListener('click', () => {
-    const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-    updateTheme(theme);
+function applyTheme() {
+    document.documentElement.dataset.theme = themeMode === 'system'
+        ? (systemTheme.matches ? 'dark' : 'light')
+        : themeMode;
 
-    try {
-        localStorage.setItem('temp-mail-theme', theme);
-    } catch {
-        // The theme still works for this page when storage is unavailable.
+    themeOptions.forEach((option) => {
+        option.setAttribute('aria-checked', String(option.dataset.themeMode === themeMode));
+    });
+
+    themeIcons.forEach((icon) => {
+        icon.toggleAttribute('hidden', icon.dataset.themeIcon !== themeMode);
+    });
+
+    const label = `Appearance: ${themeOptions.find((option) => option.dataset.themeMode === themeMode).textContent.trim()}`;
+    themeTrigger.setAttribute('aria-label', label);
+    themeTrigger.title = label;
+}
+
+function openThemeMenu(option) {
+    themeMenu.hidden = false;
+    themeTrigger.setAttribute('aria-expanded', 'true');
+    option.focus();
+}
+
+function closeThemeMenu(restoreFocus = false) {
+    themeMenu.hidden = true;
+    themeTrigger.setAttribute('aria-expanded', 'false');
+
+    if (restoreFocus) {
+        themeTrigger.focus();
+    }
+}
+
+applyTheme();
+themeTrigger.hidden = false;
+
+themeTrigger.addEventListener('click', () => {
+    if (themeMenu.hidden) {
+        openThemeMenu(themeOptions.find((option) => option.dataset.themeMode === themeMode));
+    } else {
+        closeThemeMenu(true);
     }
 });
 
-systemTheme.addEventListener('change', ({ matches }) => {
-    try {
-        if (localStorage.getItem('temp-mail-theme')) {
-            return;
-        }
-    } catch {
-        // Fall back to the system preference.
+themeControl.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !themeMenu.hidden) {
+        event.preventDefault();
+        closeThemeMenu(true);
+        return;
     }
 
-    updateTheme(matches ? 'dark' : 'light');
+    const focusedIndex = themeOptions.indexOf(document.activeElement);
+    const lastIndex = themeOptions.length - 1;
+    let nextIndex;
+
+    switch (event.key) {
+        case 'ArrowDown':
+            nextIndex = (focusedIndex + 1) % themeOptions.length;
+            break;
+        case 'ArrowUp':
+            nextIndex = focusedIndex <= 0 ? lastIndex : focusedIndex - 1;
+            break;
+        case 'Home':
+            nextIndex = 0;
+            break;
+        case 'End':
+            nextIndex = lastIndex;
+            break;
+        default:
+            return;
+    }
+
+    event.preventDefault();
+    openThemeMenu(themeOptions[nextIndex]);
+});
+
+themeControl.addEventListener('focusout', (event) => {
+    if (event.relatedTarget === themeTrigger || !themeControl.contains(event.relatedTarget)) {
+        closeThemeMenu();
+    }
+});
+
+document.addEventListener('pointerdown', (event) => {
+    if (!themeMenu.hidden && !themeControl.contains(event.target)) {
+        closeThemeMenu();
+    }
+});
+
+themeOptions.forEach((option) => {
+    option.addEventListener('click', () => {
+        themeMode = option.dataset.themeMode;
+        applyTheme();
+        closeThemeMenu(true);
+
+        try {
+            if (themeMode === 'system') {
+                localStorage.removeItem(themeKey);
+            } else {
+                localStorage.setItem(themeKey, themeMode);
+            }
+        } catch {
+            // The theme still works for this page when storage is unavailable.
+        }
+    });
+});
+
+systemTheme.addEventListener('change', applyTheme);
+window.addEventListener('storage', ({ key }) => {
+    if (key === themeKey || key === null) {
+        themeMode = savedTheme();
+        applyTheme();
+    }
 });
 
 document.querySelectorAll('[data-password-toggle]').forEach((button) => {
@@ -56,6 +155,7 @@ document.querySelectorAll('[data-pending-form]').forEach((form) => {
         submit.disabled = true;
         submit.querySelector('[data-submit-label]').textContent = submit.dataset.pendingLabel;
         submit.querySelector('[data-spinner]').hidden = false;
+        submit.querySelector('[data-submit-arrow]')?.setAttribute('hidden', '');
         status.textContent = submit.dataset.pendingLabel;
     });
 });

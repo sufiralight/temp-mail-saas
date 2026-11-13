@@ -146,3 +146,14 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 - Run `vendor/bin/phpunit` to call the test runner directly. It accepts the same file path and `--filter=testName` arguments.
 
 </laravel-boost-guidelines>
+
+## Temp Mail frontend design rules
+
+- Keep the approved Pure Zinc Monochrome appearance. Use Zinc for neutral UI, with white surfaces in Light mode. Light uses Zinc 50 page backgrounds, Zinc 950 primary text and buttons, and Zinc 200 surface borders. Dark uses Zinc 950 page backgrounds, Zinc 900 elevated surfaces, Zinc 50 primary text and buttons, and Zinc 800 surface borders. Use stronger Zinc tones where needed for input boundaries and focus. Preserve meaningful status cues and accessible messages.
+- Keep the authentication layout single-column and approximately 400 px wide. Reuse the account shell, fields, form feedback, and submit components. Avoid split panels, decorative illustration, colored gradients, heavy shadows, and glass effects.
+- Keep design tokens in `resources/css/app.css`. Reuse the shared Blade components for the header, brand, icons, and appearance menu. Use local Geist Sans for the interface, Geist Mono for technical content, and the shared Lucide icons. Keep the header height and layout. The 32 px mail mark uses a filled Zinc surface in Light and a subtle Zinc outline in Dark.
+- Keep the appearance control as one icon-only trigger with vertical Light, Dark, and System options. The trigger shows the selected preference icon. The menu shows a Zinc highlight and checkmark. Preserve keyboard operation, Escape, outside-click dismissal, preference persistence, live system changes, and pre-paint theme initialization.
+- Preserve authentication routes and backend behavior, including authorization, validation, and database setup. Use Blade, Tailwind CSS, the existing native JavaScript, and Vite. Alpine.js is currently absent. Keep production compatible with shared hosting and deploy compiled assets from `public/build`. Do not introduce Livewire, React, Vue, migrations, or a production Node.js runtime for styling work.
+- Before changing auth UI, inspect the rendered screen and existing components. After changes, inspect Login, Register, Forgot Password, and the shared layout at desktop, tablet, and mobile widths in Light, Dark, and System. Check contrast, focus, password visibility, validation, loading feedback, theme persistence, live system changes, and menu keyboard navigation. A successful build does not replace browser verification.
+
+See [README.md](README.md#authentication-design) for the palette and frontend entry points.

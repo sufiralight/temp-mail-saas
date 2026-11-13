@@ -146,3 +146,7 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 - Run `vendor/bin/phpunit` to call the test runner directly. It accepts the same file path and `--filter=testName` arguments.
 
 </laravel-boost-guidelines>
+
+## Temp Mail frontend design rules
+
+Follow the [shared Temp Mail frontend design rules](AGENTS.md#temp-mail-frontend-design-rules) for Blade, Tailwind, appearance behavior, and browser verification. The [project README](README.md#authentication-design) documents the current palette, shared components, and build process.

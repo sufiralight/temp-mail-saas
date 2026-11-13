@@ -21,7 +21,7 @@
             <x-field name="password" label="Password" type="password" autocomplete="new-password" hint="Use at least 12 characters." required />
             <x-field name="password_confirmation" label="Confirm password" type="password" autocomplete="new-password" required />
             <button class="primary sm:col-span-2" type="submit" data-pending-label="Finishing workspace setup…">
-                <span hidden data-spinner aria-hidden="true" class="size-4 rounded-full border-2 border-white/40 border-t-white motion-safe:animate-spin"></span>
+                <span hidden data-spinner aria-hidden="true" class="size-4 rounded-full border-2 border-current border-r-transparent motion-safe:animate-spin"></span>
                 <span data-submit-label>Finish workspace setup</span>
             </button>
         </form>

@@ -4,46 +4,123 @@
 @custom-variant short-desktop (@media (min-width: 900px) and (max-height: 700px));
 
 @font-face {
-    font-family: Inter;
-    src: url('../fonts/InterVariable.woff2') format('woff2');
+    font-family: 'Geist Sans';
+    src: url('../fonts/GeistSans.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Geist Mono';
+    src: url('../fonts/GeistMono.woff2') format('woff2');
     font-weight: 100 900;
     font-style: normal;
     font-display: swap;
 }
 
 @theme {
-    --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+    --text-account-title: clamp(2rem, 4vw, 2.375rem);
+    --container-account: 25rem;
+    --spacing-control: 2.875rem;
+    --font-sans: 'Geist Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'Geist Mono', ui-monospace, monospace;
 }
 
 @layer base {
     :root {
         color-scheme: light;
-        --field-fill: var(--color-white);
-        --field-ink: var(--color-zinc-950);
+        --canvas: var(--color-zinc-50);
+        --surface: var(--color-white);
+        --ink: var(--color-zinc-950);
+        --muted: var(--color-zinc-600);
+        --line: var(--color-zinc-200);
+        --control-line: var(--color-zinc-500);
+        --focus: var(--color-zinc-700);
+        --elevation: 0 2px 8px #18181b12;
+        --motion-fast: 150ms;
+        --motion-ease: cubic-bezier(.2, .65, .3, 1);
+        --field-fill: var(--surface);
+        --field-ink: var(--ink);
+        --field-placeholder: var(--muted);
+        --control-hover: var(--color-zinc-100);
+        --control-selected: var(--color-zinc-200);
+        --control-disabled: 0.6;
+        --primary-fill: var(--color-zinc-950);
+        --primary-ink: var(--color-zinc-50);
+        --primary-hover: var(--color-zinc-800);
+        --validation-line: var(--color-zinc-700);
+        --validation-ink: var(--ink);
+        --feedback-fill: var(--control-hover);
+        --brand-fill: var(--color-zinc-950);
+        --brand-line: var(--brand-fill);
+        --brand-ink: var(--color-white);
     }
 
     :root[data-theme=dark] {
         color-scheme: dark;
-        --field-fill: var(--color-zinc-950);
-        --field-ink: var(--color-zinc-100);
+        --canvas: var(--color-zinc-950);
+        --surface: var(--color-zinc-900);
+        --ink: var(--color-zinc-50);
+        --muted: var(--color-zinc-400);
+        --line: var(--color-zinc-800);
+        --control-line: var(--color-zinc-500);
+        --focus: var(--color-zinc-300);
+        --elevation: 0 2px 8px #09090b80;
+        --field-fill: var(--canvas);
+        --control-hover: var(--color-zinc-800);
+        --control-selected: var(--color-zinc-800);
+        --primary-fill: var(--color-zinc-50);
+        --primary-ink: var(--color-zinc-950);
+        --primary-hover: var(--color-zinc-200);
+        --validation-line: var(--color-zinc-300);
+        --feedback-fill: var(--surface);
+        --brand-fill: var(--surface);
+        --brand-line: var(--line);
+        --brand-ink: var(--color-zinc-50);
     }
 
     :focus-visible {
-        @apply outline-2 outline-offset-3 outline-indigo-600 dark:outline-indigo-400;
+        outline: 2px solid var(--focus);
+        outline-offset: 3px;
     }
 
     ::selection {
-        @apply bg-indigo-100 text-indigo-950 dark:bg-indigo-800 dark:text-white;
+        @apply bg-zinc-200 text-zinc-950 dark:bg-zinc-700 dark:text-zinc-50;
     }
 }
 
 @layer components {
     .surface {
-        @apply rounded-2xl border border-zinc-200 bg-white p-5 shadow-[0_2px_4px_#18181b05,0_16px_40px_-24px_#18181b30] sm:p-8 dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none;
+        @apply rounded-2xl border p-5 sm:p-8;
+        border-color: var(--line);
+        background: var(--surface);
+        box-shadow: var(--elevation);
     }
 
     .field {
-        @apply min-h-11 w-full min-w-0 rounded-lg border border-zinc-300 bg-white px-3 py-2 text-base text-zinc-950 shadow-xs transition-colors placeholder:text-zinc-500 focus:border-indigo-600 focus:outline-2 focus:outline-offset-1 focus:outline-indigo-600 disabled:cursor-not-allowed disabled:bg-zinc-100 disabled:text-zinc-500 sm:text-sm dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:focus:border-indigo-400 dark:focus:outline-indigo-400 dark:disabled:bg-zinc-800 dark:disabled:text-zinc-400;
+        @apply min-h-control w-full min-w-0 rounded-lg border px-3 py-2 text-base disabled:cursor-not-allowed sm:text-sm;
+        background: var(--field-fill);
+        border-color: var(--control-line);
+        color: var(--field-ink);
+    }
+
+    .field::placeholder {
+        color: var(--field-placeholder);
+    }
+
+    .field:focus {
+        border-color: var(--focus);
+        outline: 2px solid var(--focus);
+        outline-offset: 1px;
+    }
+
+    .field[aria-invalid=true] {
+        border-color: var(--validation-line);
+    }
+
+    .field-error {
+        color: var(--validation-ink);
     }
 
     .field:is(:autofill, :-webkit-autofill) {
@@ -88,19 +165,157 @@
         }
     }
 
+    .primary,
+    .secondary {
+        @apply inline-flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-center text-sm font-semibold motion-safe:transition-colors disabled:cursor-not-allowed;
+    }
+
     .primary {
-        @apply inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-center text-sm font-semibold text-white shadow-xs transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:disabled:bg-indigo-800;
+        @apply min-h-control;
+        background: var(--primary-fill);
+        color: var(--primary-ink);
+    }
+
+    .primary:hover:not(:disabled) {
+        background: var(--primary-hover);
     }
 
     .secondary {
-        @apply inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-center text-sm font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800;
+        @apply min-h-11 border;
+        background: var(--surface);
+        border-color: var(--line);
+        color: var(--ink);
+    }
+
+    .secondary:hover:not(:disabled),
+    .icon-button:is(:hover, [aria-expanded=true]),
+    .theme-option:is(:hover, :focus-visible) {
+        background: var(--control-hover);
+    }
+
+    :is(.field, .primary, .secondary, .icon-button):disabled {
+        opacity: var(--control-disabled);
     }
 
     .link {
-        @apply rounded-sm font-semibold text-indigo-700 underline-offset-4 hover:underline dark:text-indigo-300;
+        @apply rounded-sm font-semibold underline decoration-zinc-400 underline-offset-4 hover:decoration-current;
+        color: var(--ink);
     }
 
     .body-copy {
-        @apply text-sm/6 text-zinc-600 dark:text-zinc-400;
+        @apply text-sm/6;
+        color: var(--muted);
+    }
+}
+
+@layer components {
+    .app-body {
+        background: var(--canvas);
+        color: var(--ink);
+    }
+
+    .app-header {
+        background: var(--surface);
+        border-color: var(--line);
+    }
+
+    .brand-mark {
+        background: var(--brand-fill);
+        border-color: var(--brand-line);
+        color: var(--brand-ink);
+    }
+
+    .brand-sidebar {
+        border-color: var(--line);
+    }
+
+    .account-page {
+        @apply flex flex-col;
+    }
+
+    .account-main {
+        @apply max-w-account pt-[clamp(3rem,14dvh,8rem)] pb-10;
+        width: min(var(--container-account), calc(100% - 3rem));
+    }
+
+    .account-content {
+        @apply min-w-0;
+    }
+
+    .account-title {
+        @apply text-account-title leading-none font-semibold tracking-[-0.055em];
+    }
+
+    .account-footer {
+        @apply mt-6 border-t pt-5 text-sm/6;
+        border-color: var(--line);
+        color: var(--muted);
+    }
+
+    .account-submit {
+        @apply relative min-h-control;
+    }
+
+    .account-submit [hidden] {
+        display: none;
+    }
+
+    .account-submit :is([data-submit-arrow], [data-spinner]) {
+        @apply absolute right-4;
+    }
+
+    .icon-button {
+        @apply size-full cursor-pointer place-items-center rounded-lg border;
+        color: var(--ink);
+        border-color: var(--line);
+    }
+
+    .icon-button [hidden] {
+        display: none;
+    }
+
+    .icon-button:not([hidden]) {
+        display: grid;
+    }
+
+    .theme-menu {
+        @apply absolute top-full right-0 z-30 mt-2 w-36 rounded-xl border p-1;
+        background: var(--surface);
+        border-color: var(--line);
+        box-shadow: var(--elevation);
+    }
+
+    .theme-option {
+        @apply flex min-h-9 w-full cursor-pointer items-center gap-2 rounded-lg px-2.5 text-left text-sm focus-visible:outline-offset-[-2px];
+        color: var(--muted);
+    }
+
+    .theme-option[aria-checked=true] {
+        @apply font-medium;
+        background: var(--control-selected);
+        color: var(--ink);
+    }
+
+    .theme-option[aria-checked=false] .theme-check {
+        visibility: hidden;
+    }
+
+    .feedback-error,
+    .feedback-success {
+        @apply border;
+        background: var(--feedback-fill);
+        border-color: var(--line);
+        color: var(--ink);
+    }
+
+    .feedback-error:focus {
+        outline: 2px solid var(--focus);
+        outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .field, .account-submit {
+            transition: border-color var(--motion-fast) var(--motion-ease), filter var(--motion-fast) var(--motion-ease);
+        }
     }
 }

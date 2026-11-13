@@ -1,58 +1,42 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Temp Mail
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Temp Mail is a Laravel 13 workspace application with a browser-based MySQL setup flow, account registration, sign-in, password recovery, and a dashboard. The frontend uses Blade, Tailwind CSS 4, and JavaScript bundled by Vite.
 
-## About Laravel
+## Authentication design
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The approved design is **Pure Zinc Monochrome**. Sign-in, registration, and password recovery share a single-column form layout capped at 400 px. The minimal header uses a 32 px Lucide mail mark and semibold Geist Sans. Geist Mono is available for technical values and commands. Both fonts are bundled locally.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| Role | Light | Dark |
+| --- | --- | --- |
+| Page | Zinc 50 | Zinc 950 |
+| Header and elevated surfaces | White | Zinc 900 |
+| Primary text and button fill | Zinc 950 | Zinc 50 |
+| Surface borders | Zinc 200 | Zinc 800 |
+| Brand mark | Zinc 950 fill and white icon | Zinc 900 fill, Zinc 800 outline, and Zinc 50 icon |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Input borders and focus rings use stronger Zinc tones where needed for visibility. Feedback uses explicit messages and icons, with field-level validation associated with its inputs. Shared styles cover buttons, inputs, links, surfaces, menus, hover, focus, disabled, and loading states.
 
-## Learning Laravel
+## Appearance menu
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+The header shows a single icon for the selected preference. The dropdown lists Light (sun), Dark (moon), and System (monitor), with a Zinc highlight and checkmark on the selected option. Use the arrow keys to move, Enter or Space to select, and Escape to close and return focus to the trigger. Tab or an outside click dismisses the menu.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Explicit Light and Dark preferences are saved under `temp-mail-theme` in localStorage. Selecting System clears that override and follows live changes to `prefers-color-scheme`. The shared shell resolves the theme before loading the Vite styles.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## Frontend entry points
 
-## Agentic Development
+| File | Responsibility |
+| --- | --- |
+| [app.css](resources/css/app.css) | Semantic tokens, typography, and shared control states |
+| [shell.blade.php](resources/views/components/shell.blade.php) | Header, pre-paint theme initialization, and layout |
+| [brand.blade.php](resources/views/components/brand.blade.php) | Shared Temp Mail brand |
+| [theme-control.blade.php](resources/views/components/theme-control.blade.php) | Appearance trigger and dropdown |
+| [account-shell.blade.php](resources/views/components/account-shell.blade.php) | Shared account layout |
+| [app.js](resources/js/app.js) | Theme, password visibility, and submission feedback |
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Build and verify
 
-```bash
-composer require laravel/boost --dev
+Run `npm install` and `npm run build` on a development machine or build runner. For shared hosting, deploy the generated `public/build` directory with the application and serve the Laravel `public` directory as the document root. Node.js and npm are build-time tools. The application serves the compiled assets through Laravel.
 
-php artisan boost:install
-```
+Run `vendor/bin/phpunit` for application tests. For changes to the account UI, inspect Login, Register, and Forgot Password in Chrome or another browser at desktop, tablet, and mobile widths. Check Light, Dark, and System, including live System changes and persistence across navigation. Verify keyboard focus, dropdown dismissal, password visibility, form validation, and submission feedback.
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+See [AGENTS.md](AGENTS.md#temp-mail-frontend-design-rules) for project-specific implementation rules.

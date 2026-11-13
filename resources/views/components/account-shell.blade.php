@@ -1,14 +1,17 @@
 @props(['title', 'intro'])
 
-<x-shell :title="$title">
-    <div class="mx-auto max-w-md sm:pt-7">
-        <div class="mb-6">
-            <h1 class="text-[1.875rem]/[1.12] font-semibold tracking-[-0.045em] sm:text-[2.25rem]/[1.12]">{{ $title }}</h1>
-            <p class="body-copy mt-3">{{ $intro }}</p>
+<x-shell :title="$title" account>
+    <section class="account-content" aria-labelledby="account-title">
+        <div class="mb-8 grid gap-2">
+            <h1 id="account-title" class="account-title">{{ $title }}</h1>
+            <p class="body-copy">{{ $intro }}</p>
         </div>
-        <div class="surface">
-            <x-form-feedback />
-            {{ $slot }}
-        </div>
-    </div>
+
+        <x-form-feedback />
+        {{ $slot }}
+
+        @isset($footer)
+            <div class="account-footer">{{ $footer }}</div>
+        @endisset
+    </section>
 </x-shell>

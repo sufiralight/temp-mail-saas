@@ -1,4 +1,4 @@
-@props(['title', 'wide' => false, 'setup' => false, 'sidebar' => false])
+@props(['title', 'wide' => false, 'setup' => false, 'sidebar' => false, 'account' => false])
 
 <!doctype html>
 <html lang="en">
@@ -19,37 +19,34 @@
     </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-dvh bg-zinc-50 font-sans text-zinc-950 antialiased dark:bg-zinc-950 dark:text-zinc-50">
-    <a class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-10 focus:rounded-lg focus:bg-white focus:px-3 focus:py-2 focus:text-zinc-950" href="#main">Skip to content</a>
-    <header class="border-b border-zinc-200/80 bg-white dark:border-zinc-800 dark:bg-zinc-950">
+<body @class(["app-body min-h-dvh font-sans antialiased", "account-page" => $account])>
+    <a class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-10 focus:rounded-lg focus:bg-zinc-50 focus:px-3 focus:py-2 focus:text-zinc-950" href="#main">Skip to content</a>
+    <header class="app-header border-b">
         <div @class([
             'mx-auto flex items-center justify-between gap-3 px-4',
             'max-w-6xl sm:px-8' => ! $sidebar,
-            'sm:px-6 lg:pr-8' => $sidebar,
+            'sm:px-6 lg:pl-0 lg:pr-8' => $sidebar,
             'min-h-12 sm:min-h-14' => $setup,
             'min-h-16' => ! $setup,
         ])>
-            <a href="/" class="flex shrink-0 items-center gap-2.5 rounded-lg text-sm font-bold tracking-[-0.025em]">
-                <span class="grid size-8 place-items-center rounded-[9px] border border-indigo-200 bg-indigo-50 text-indigo-700 dark:border-indigo-900 dark:bg-indigo-950 dark:text-indigo-300">
-                    <x-icon name="mail" class="size-[18px]" />
-                </span>
-                Temp Mail
-            </a>
-            <div class="flex items-center gap-2 sm:gap-4">
+            <x-brand @class([
+                'rounded-lg' => ! $sidebar,
+                'brand-sidebar lg:min-h-16 lg:w-56 lg:border-r lg:px-5' => $sidebar,
+            ]) />
+            <div class="flex items-center gap-2">
+                <x-theme-control />
                 {{ $headerActions ?? '' }}
-                <button type="button" data-theme-toggle hidden aria-label="Dark mode" aria-pressed="false" class="grid size-10 place-items-center rounded-lg border border-zinc-200 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-900">
-                    <x-icon name="moon" class="size-[17px] dark:hidden" />
-                    <x-icon name="sun" class="hidden size-[17px] dark:block" />
-                </button>
             </div>
         </div>
     </header>
     <main id="main" tabindex="-1" @class([
-        'mx-auto w-full px-4 outline-none sm:px-6',
+        'mx-auto outline-none',
+        'w-full px-4 sm:px-6' => ! $account,
         'max-w-5xl' => $wide,
-        'max-w-[38rem]' => ! $wide && ! $setup,
+        'max-w-[38rem]' => ! $wide && ! $setup && ! $account,
         'setup-page max-w-[52rem]' => $setup,
-        'pt-8 pb-12 sm:pt-11' => ! $setup,
+        'pt-8 pb-12 sm:pt-11' => ! $setup && ! $account,
+        'account-main' => $account,
         'lg:max-w-none lg:p-0' => $sidebar,
     ])>
         {{ $slot }}

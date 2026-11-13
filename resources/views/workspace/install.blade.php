@@ -23,13 +23,13 @@
         @endunless
 
         @if ($verified)
-            <div class="flex items-start gap-3 rounded-xl border border-indigo-200 bg-indigo-50 p-4 text-indigo-950 dark:border-indigo-900 dark:bg-indigo-950/50 dark:text-indigo-100">
-                <span class="grid size-6 shrink-0 place-items-center rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200">
+            <div class="flex items-start gap-3 rounded-xl border border-zinc-200 bg-zinc-50 p-4 text-zinc-950 dark:border-zinc-900 dark:bg-zinc-950/50 dark:text-zinc-100">
+                <span class="grid size-6 shrink-0 place-items-center rounded-full bg-zinc-100 text-zinc-700 dark:bg-zinc-900 dark:text-zinc-200">
                     <x-icon name="check" class="size-4" />
                 </span>
                 <div role="status">
                     <h3 class="text-sm font-semibold">Database connected</h3>
-                    <p class="mt-1 text-sm/5 text-indigo-900 dark:text-indigo-200">Your workspace can connect to MySQL. Continue to create your admin account.</p>
+                    <p class="mt-1 text-sm/5 text-zinc-900 dark:text-zinc-200">Your workspace can connect to MySQL. Continue to create your admin account.</p>
                 </div>
             </div>
             <dl class="my-5 grid gap-3 rounded-xl border border-zinc-200 bg-zinc-50 p-4 sm:grid-cols-[1fr_auto_1fr] dark:border-zinc-800 dark:bg-zinc-950/50">
@@ -82,7 +82,7 @@
                             :hint="app()->isLocal() ? 'You can leave this blank if your local MySQL user has no password.' : 'Enter the password for the MySQL user assigned to this database.'" />
                     </div>
                     <button class="primary short-desktop:col-span-full" type="submit" data-pending-label="Checking connection…">
-                        <span hidden data-spinner aria-hidden="true" class="size-4 rounded-full border-2 border-white/40 border-t-white motion-safe:animate-spin"></span>
+                        <span hidden data-spinner aria-hidden="true" class="size-4 rounded-full border-2 border-current border-r-transparent motion-safe:animate-spin"></span>
                         <span data-submit-label>Verify connection</span>
                     </button>
                 </fieldset>
